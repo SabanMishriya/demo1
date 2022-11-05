@@ -28,7 +28,7 @@ pipeline {
 		}
 		stage('deploy') {
 		    steps {
-		        sh 'cp target/*.jar /home/saban/tomcat/apache-tomcat-9.0.68/webapps/'
+		        sh "java -jar target/demo1-0.0.1-SNAPSHOT.jar&"
 		    }
 		}
     }
