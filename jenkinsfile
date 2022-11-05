@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/SabanMishriya/demo1.git'
+                sh  "mvn -DskipTest clean install"
+            }
+        }
+        stage('Package') {
+            steps {
+            sh  "mvn package"
+                
+            }
+        }
+        stage('Test') {
+			steps {
+				sh 'mvn test'
+			}
+			post {
+				always {
+					junit '**/target/surefire-reports/*.xml'
+					archiveArtifacts '**/target/*.jar'
+					
+				}
+			}
+		}
+		stage('deploy') {
+		    steps {
+		        sh 'cp target/*.jar /var/opt/tomcat/webapps'
+		    }
+		}
+    }
+}
